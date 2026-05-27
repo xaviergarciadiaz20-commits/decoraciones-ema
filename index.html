@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Decoraciones y Detalles EMA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #faf6f0;
+      --blush: #e8c4b0;
+      --rose: #c4896a;
+      --terracotta: #a0614a;
+      --sage: #8fa68c;
+      --dark: #2a1f1a;
+      --gold: #c9a96e;
+      --text: #3d2b22;
+      --light-text: #7a6055;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(250,246,240,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196,137,106,0.15);
+      animation: fadeDown .8s ease both;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600; letter-spacing: .12em;
+      color: var(--terracotta); text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--light-text); text-decoration: none;
+      transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--rose); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      position: relative; overflow: hidden;
+      padding: 6rem 2rem 4rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(232,196,176,0.38) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 20% 70%, rgba(143,166,140,0.22) 0%, transparent 60%),
+        linear-gradient(160deg, #fdf9f4 0%, #f5ede3 60%, #eeddd0 100%);
+    }
+    /* Decorative circles */
+    .hero-bg::before {
+      content: '';
+      position: absolute; top: -120px; right: -120px;
+      width: 500px; height: 500px; border-radius: 50%;
+      border: 1px solid rgba(196,137,106,0.15);
+      animation: spin 40s linear infinite;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -80px;
+      width: 340px; height: 340px; border-radius: 50%;
+      border: 1px solid rgba(143,166,140,0.2);
+      animation: spin 30s linear reverse infinite;
+    }
+
+    .hero-content {
+      position: relative; z-index: 1;
+      text-align: center; max-width: 780px;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: .72rem; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 1.8rem;
+      opacity: 0; animation: fadeUp .7s .3s ease both;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      font-weight: 300; line-height: 1.05;
+      color: var(--dark); margin-bottom: .5rem;
+      opacity: 0; animation: fadeUp .8s .5s ease both;
+    }
+    .hero-title em {
+      font-style: italic; color: var(--terracotta);
+    }
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.55rem);
+      font-weight: 300; font-style: italic;
+      color: var(--light-text); margin-bottom: 3rem;
+      opacity: 0; animation: fadeUp .8s .7s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp .8s .9s ease both;
+    }
+    .btn {
+      padding: .9rem 2.6rem; border-radius: 0;
+      font-family: 'Jost', sans-serif;
+      font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; transition: all .35s;
+    }
+    .btn-primary {
+      background: var(--terracotta); color: #fff; border: none;
+    }
+    .btn-primary:hover { background: var(--dark); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--terracotta);
+      border: 1px solid var(--rose);
+    }
+    .btn-outline:hover { background: var(--rose); color: #fff; transform: translateY(-2px); }
+
+    /* Floating badges */
+    .badge {
+      position: absolute; z-index: 2;
+      background: #fff; border: 1px solid var(--blush);
+      padding: .6rem 1.1rem; border-radius: 60px;
+      font-size: .7rem; letter-spacing: .1em; color: var(--light-text);
+      box-shadow: 0 8px 24px rgba(160,97,74,0.08);
+      animation: float 4s ease-in-out infinite;
+    }
+    .badge-1 { top: 22%; left: 5%; animation-delay: 0s; }
+    .badge-2 { top: 30%; right: 5%; animation-delay: 1.5s; }
+    .badge-3 { bottom: 22%; left: 8%; animation-delay: .7s; }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: var(--light-text);
+      opacity: 0; animation: fadeUp .8s 1.4s ease both;
+    }
+    .scroll-line {
+      width: 1px; height: 40px; background: linear-gradient(to bottom, var(--rose), transparent);
+      animation: growLine 1.5s 1.6s ease both;
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 7rem 2rem; }
+    .section-label {
+      font-size: .7rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300; line-height: 1.15; color: var(--dark);
+    }
+    .section-title em { font-style: italic; color: var(--terracotta); }
+
+    /* ── SERVICES ── */
+    .services { background: #fff; }
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+    .services-header { text-align: center; margin-bottom: 5rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2.5rem;
+    }
+    .service-card {
+      position: relative; padding: 2.5rem 2rem;
+      border: 1px solid rgba(196,137,106,0.15);
+      transition: all .4s;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(232,196,176,0.15) 0%, transparent 60%);
+      opacity: 0; transition: opacity .4s;
+    }
+    .service-card:hover { border-color: var(--blush); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(160,97,74,0.1); }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon {
+      font-size: 2.2rem; margin-bottom: 1.5rem; display: block;
+    }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400; margin-bottom: .8rem;
+      color: var(--dark);
+    }
+    .service-desc {
+      font-size: .85rem; line-height: 1.75; color: var(--light-text);
+    }
+    .service-num {
+      position: absolute; top: 1.5rem; right: 1.8rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 300; color: rgba(196,137,106,0.1);
+      line-height: 1;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      background: linear-gradient(135deg, #f5ede3 0%, var(--cream) 100%);
+    }
+    .about-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .about-visual {
+      position: relative; aspect-ratio: 4/5;
+      background: linear-gradient(160deg, var(--blush) 0%, var(--rose) 100%);
+      border-radius: 2px;
+      display: grid; place-items: center;
+    }
+    .about-visual::after {
+      content: '';
+      position: absolute; top: 20px; left: 20px; right: -20px; bottom: -20px;
+      border: 1px solid var(--blush); z-index: -1;
+    }
+    .about-visual-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 8vw, 7rem); font-weight: 300;
+      color: rgba(255,255,255,0.3); font-style: italic;
+      text-align: center; padding: 2rem;
+    }
+    .about-text { }
+    .about-text .section-label { margin-bottom: 1rem; }
+    .about-text .section-title { margin-bottom: 2rem; }
+    .about-body {
+      font-size: .93rem; line-height: 1.9; color: var(--light-text);
+      margin-bottom: 2.5rem;
+    }
+    .about-stats {
+      display: flex; gap: 3rem;
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 300; color: var(--terracotta);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: .72rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--light-text); margin-top: .4rem;
+    }
+
+    /* ── GALLERY ── */
+    .gallery { background: var(--dark); }
+    .gallery-inner { max-width: 1100px; margin: 0 auto; }
+    .gallery-header { text-align: center; margin-bottom: 4rem; }
+    .gallery-header .section-label { color: var(--blush); }
+    .gallery-header .section-title { color: var(--cream); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 1rem;
+    }
+    .gal-item {
+      position: relative; overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      min-height: 200px;
+      transition: transform .4s;
+    }
+    .gal-item:hover { transform: scale(1.01); }
+    .gal-item:nth-child(1) { grid-column: span 2; min-height: 260px; }
+    .gal-item:nth-child(4) { grid-column: span 2; min-height: 260px; }
+    .gal-emoji {
+      font-size: 4rem; opacity: .4;
+      transition: opacity .3s, transform .3s;
+    }
+    .gal-item:hover .gal-emoji { opacity: .7; transform: scale(1.1); }
+    .gal-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(42,31,26,0.8) 0%, transparent 50%);
+      opacity: 0; transition: opacity .4s;
+      display: flex; align-items: flex-end; padding: 1.5rem;
+    }
+    .gal-item:hover .gal-overlay { opacity: 1; }
+    .gal-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: #fff; font-style: italic;
+    }
+
+    /* Gallery items colors */
+    .gal-item:nth-child(1) { background: linear-gradient(135deg, #3d2b22 0%, #5c3a28 100%); }
+    .gal-item:nth-child(2) { background: linear-gradient(135deg, #2a3528 0%, #3d5038 100%); }
+    .gal-item:nth-child(3) { background: linear-gradient(135deg, #3a2d38 0%, #5a3d55 100%); }
+    .gal-item:nth-child(4) { background: linear-gradient(135deg, #2d2a3a 0%, #3d3855 100%); }
+    .gal-item:nth-child(5) { background: linear-gradient(135deg, #3a2520 0%, #5c3025 100%); }
+
+    /* ── PROCESS ── */
+    .process { background: var(--cream); }
+    .process-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .process-header { margin-bottom: 5rem; }
+    .steps {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+    }
+    .step { position: relative; }
+    .step::after {
+      content: '→';
+      position: absolute; right: -1.2rem; top: 1.5rem;
+      color: var(--blush); font-size: 1.2rem;
+    }
+    .step:last-child::after { display: none; }
+    .step-circle {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 1px solid var(--blush);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; color: var(--rose);
+      transition: all .3s;
+    }
+    .step:hover .step-circle { background: var(--rose); color: #fff; border-color: var(--rose); }
+    .step-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; color: var(--dark); margin-bottom: .5rem;
+    }
+    .step-desc { font-size: .8rem; color: var(--light-text); line-height: 1.7; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: linear-gradient(160deg, #fdf9f4, #f0e5d8); }
+    .testimonials-inner { max-width: 1000px; margin: 0 auto; }
+    .testi-header { text-align: center; margin-bottom: 4rem; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+    .testi-card {
+      background: #fff; padding: 2.5rem 2rem;
+      border-left: 3px solid var(--rose);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .testi-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(160,97,74,0.1); }
+    .testi-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-style: italic;
+      color: var(--text); line-height: 1.75; margin-bottom: 1.5rem;
+    }
+    .testi-author { font-size: .75rem; letter-spacing: .12em; color: var(--light-text); }
+    .testi-event { font-size: .7rem; color: var(--rose); margin-top: .2rem; }
+    .stars { color: var(--gold); font-size: .9rem; margin-bottom: 1rem; }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--dark); color: var(--cream); }
+    .contact-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start;
+    }
+    .contact .section-label { color: var(--blush); }
+    .contact .section-title { color: var(--cream); margin-bottom: 1.5rem; }
+    .contact-desc { font-size: .9rem; line-height: 1.8; color: rgba(250,246,240,0.6); margin-bottom: 3rem; }
+    .contact-info { display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-row {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .85rem; color: rgba(250,246,240,0.7);
+    }
+    .contact-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(196,137,106,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(196,137,106,0.2);
+      color: var(--cream);
+      padding: .9rem 1.2rem;
+      font-family: 'Jost', sans-serif;
+      font-size: .85rem;
+      outline: none;
+      transition: border-color .3s;
+      border-radius: 0;
+      width: 100%;
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(250,246,240,0.3); }
+    .contact-form select option { background: var(--dark); }
+    .contact-form input:focus,
+    .contact-form textarea:focus,
+    .contact-form select:focus { border-color: var(--rose); }
+    .contact-form textarea { resize: vertical; min-height: 110px; }
+    .btn-send {
+      background: var(--rose); color: #fff; border: none;
+      padding: 1rem 2.5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: .78rem; letter-spacing: .2em; text-transform: uppercase;
+      cursor: pointer; transition: all .3s; width: 100%;
+    }
+    .btn-send:hover { background: var(--terracotta); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #1a100d;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 400; letter-spacing: .15em;
+      color: var(--blush); text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .footer-tagline {
+      font-size: .75rem; letter-spacing: .2em; color: rgba(250,246,240,0.3);
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .footer-social { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 2rem; }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid rgba(196,137,106,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; cursor: pointer;
+      transition: all .3s; text-decoration: none;
+    }
+    .social-btn:hover { border-color: var(--rose); transform: translateY(-3px); }
+    .footer-copy { font-size: .7rem; color: rgba(250,246,240,0.2); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes growLine {
+      from { transform: scaleY(0); }
+      to   { transform: scaleY(1); }
+    }
+
+    /* Scroll-reveal */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { display: none; }
+      .about-inner,
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .steps { grid-template-columns: repeat(2,1fr); }
+      .step::after { display: none; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gal-item:nth-child(1),
+      .gal-item:nth-child(4) { grid-column: span 1; }
+      .badge { display: none; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 5rem 1.5rem; }
+      .steps { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .about-stats { gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">EMA</div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#contacto" class="btn btn-primary" style="font-size:.72rem;padding:.65rem 1.6rem;">Cotizar</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+
+  <div class="badge badge-1">✨ Decoraciones personalizadas</div>
+  <div class="badge badge-2">🎓 Grados & Fiestas</div>
+  <div class="badge badge-3">💍 Matrimonios</div>
+
+  <div class="hero-content">
+    <p class="hero-tag">Creamos momentos inolvidables</p>
+    <h1 class="hero-title">Decoraciones<br>y Detalles <em>EMA</em></h1>
+    <p class="hero-subtitle">Transformamos cada celebración en una experiencia única</p>
+    <div class="hero-btns">
+      <a href="#servicios" class="btn btn-primary">Ver Servicios</a>
+      <a href="#contacto" class="btn btn-outline">Solicitar Cotización</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Explorar</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="servicios">
+  <div class="services-inner">
+    <div class="services-header reveal">
+      <p class="section-label">Lo que hacemos</p>
+      <h2 class="section-title">Cada evento merece<br><em>su propia magia</em></h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-num">01</span>
+        <span class="service-icon">🎓</span>
+        <h3 class="service-name">Grados & Graduaciones</h3>
+        <p class="service-desc">Celebra tu logro con una decoración que refleje tu esfuerzo y éxito. Arreglos florales, fondos fotográficos, globos y más.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-num">02</span>
+        <span class="service-icon">🎉</span>
+        <h3 class="service-name">Fiestas & Cumpleaños</h3>
+        <p class="service-desc">Desde cumpleaños infantiles hasta grandes celebraciones, diseñamos ambientes llenos de color, alegría y personalidad.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-num">03</span>
+        <span class="service-icon">💍</span>
+        <h3 class="service-name">Matrimonios</h3>
+        <p class="service-desc">El día más especial merece una decoración perfecta. Creamos escenarios románticos y elegantes para tu boda de ensueño.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-num">04</span>
+        <span class="service-icon">🍼</span>
+        <h3 class="service-name">Baby Showers</h3>
+        <p class="service-desc">Recibe a tu bebé con una decoración tierna y especial. Mesas de dulces, globos temáticos y ambientación completa.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-num">05</span>
+        <span class="service-icon">🏢</span>
+        <h3 class="service-name">Eventos Corporativos</h3>
+        <p class="service-desc">Reuniones, lanzamientos y celebraciones empresariales con un toque profesional y sofisticado que impresionará a todos.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-num">06</span>
+        <span class="service-icon">🌸</span>
+        <h3 class="service-name">Eventos a Medida</h3>
+        <p class="service-desc">¿Tienes una idea especial? La hacemos realidad. Diseños completamente personalizados para cualquier tipo de celebración.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="nosotros">
+  <div class="about-inner">
+    <div class="about-visual reveal">
+      <div class="about-visual-text">EMA</div>
+    </div>
+    <div class="about-text reveal">
+      <p class="section-label">Nuestra historia</p>
+      <h2 class="section-title">Pasión por los <em>detalles</em></h2>
+      <p class="about-body">
+        En Decoraciones y Detalles EMA creemos que cada celebración merece ser perfecta. 
+        Nacimos del amor por crear ambientes mágicos que queden grabados en la memoria de 
+        quienes los viven. Con años de experiencia, hemos decorado cientos de eventos 
+        con dedicación, creatividad y un cuidado especial por cada detalle.
+      </p>
+      <p class="about-body">
+        Trabajamos contigo desde la primera idea hasta el último globo, asegurándonos 
+        de que tu visión se convierta en realidad. Nuestro compromiso es tu felicidad.
+      </p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Eventos realizados</div>
+        </div>
+        <div>
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Años de experiencia</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Clientes felices</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="galeria">
+  <div class="gallery-inner">
+    <div class="gallery-header reveal">
+      <p class="section-label">Nuestro trabajo</p>
+      <h2 class="section-title">Una <em>muestra</em> de lo que creamos</h2>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gal-item">
+        <span class="gal-emoji">🎓</span>
+        <div class="gal-overlay"><span class="gal-label">Decoración de grado universitario</span></div>
+      </div>
+      <div class="gal-item">
+        <span class="gal-emoji">🌿</span>
+        <div class="gal-overlay"><span class="gal-label">Arco natural para matrimonio</span></div>
+      </div>
+      <div class="gal-item">
+        <span class="gal-emoji">🎂</span>
+        <div class="gal-overlay"><span class="gal-label">Mesa de dulces temática</span></div>
+      </div>
+      <div class="gal-item">
+        <span class="gal-emoji">💍</span>
+        <div class="gal-overlay"><span class="gal-label">Boda de ensueño al aire libre</span></div>
+      </div>
+      <div class="gal-item">
+        <span class="gal-emoji">🎈</span>
+        <div class="gal-overlay"><span class="gal-label">Fiesta de cumpleaños temática</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process-inner">
+    <div class="process-header reveal">
+      <p class="section-label">Cómo trabajamos</p>
+      <h2 class="section-title">Simple, <em>transparente</em> y sin estrés</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-circle">1</div>
+        <h4 class="step-name">Consulta</h4>
+        <p class="step-desc">Nos cuéntanos tu visión, fecha y presupuesto. Sin compromisos.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">2</div>
+        <h4 class="step-name">Diseño</h4>
+        <p class="step-desc">Creamos una propuesta personalizada con moodboard y cotización.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">3</div>
+        <h4 class="step-name">Preparación</h4>
+        <p class="step-desc">Preparamos todo con anticipación para que el día sea perfecto.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">4</div>
+        <h4 class="step-name">¡A disfrutar!</h4>
+        <p class="step-desc">Montamos, decoramos y tú solo tienes que vivir tu celebración.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="testi-header reveal">
+      <p class="section-label">Testimonios</p>
+      <h2 class="section-title">Lo que dicen <em>nuestros clientes</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Decoraron el grado de mi hija de manera espectacular. Cada detalle fue perfecto y todos los invitados quedaron encantados."</p>
+        <p class="testi-author">María Fernanda R.</p>
+        <p class="testi-event">Decoración de Grado · 2024</p>
+      </div>
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Nuestra boda superó todas las expectativas. El arco floral y la ambientación fueron de cuento. ¡Los recomiendo con los ojos cerrados!"</p>
+        <p class="testi-author">Carolina & Sebastián M.</p>
+        <p class="testi-event">Matrimonio · 2024</p>
+      </div>
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"El baby shower de mi bebé quedó precioso. La mesa de dulces fue una obra de arte. El servicio, puntual y muy profesional."</p>
+        <p class="testi-author">Andrea López G.</p>
+        <p class="testi-event">Baby Shower · 2025</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contacto">
+  <div class="contact-inner">
+    <div>
+      <p class="section-label">Contáctanos</p>
+      <h2 class="section-title reveal">Hagamos tu sueño <em>realidad</em></h2>
+      <p class="contact-desc">¿Tienes un evento especial? Escríbenos y con gusto te asesoramos sin ningún costo. Estamos listos para crear algo inolvidable contigo.</p>
+      <div class="contact-info">
+        <div class="contact-row">
+          <div class="contact-icon">📱</div>
+          <span>+57 300 000 0000</span>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📧</div>
+          <span>contacto@decoracionesema.com</span>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <span>Colombia · Servicio a domicilio</span>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">⏰</div>
+          <span>Lun – Sáb: 8:00 am – 7:00 pm</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="contact-form">
+        <input type="text" placeholder="Tu nombre completo" />
+        <input type="tel" placeholder="Número de WhatsApp" />
+        <select>
+          <option value="" disabled selected>Tipo de evento</option>
+          <option>Grado / Graduación</option>
+          <option>Fiesta / Cumpleaños</option>
+          <option>Matrimonio</option>
+          <option>Baby Shower</option>
+          <option>Evento Corporativo</option>
+          <option>Otro</option>
+        </select>
+        <input type="text" placeholder="Fecha aproximada del evento" />
+        <textarea placeholder="Cuéntanos un poco sobre tu evento y lo que tienes en mente..."></textarea>
+        <button class="btn-send" onclick="enviarForm()">Solicitar Cotización Gratuita</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Decoraciones y Detalles EMA</div>
+  <p class="footer-tagline">Creando momentos que perduran para siempre</p>
+  <div class="footer-social">
+    <a class="social-btn" title="Instagram">📸</a>
+    <a class="social-btn" title="Facebook">📘</a>
+    <a class="social-btn" title="WhatsApp">💬</a>
+    <a class="social-btn" title="TikTok">🎵</a>
+  </div>
+  <p class="footer-copy">© 2025 Decoraciones y Detalles EMA · Todos los derechos reservados</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submit
+  function enviarForm() {
+    alert('¡Gracias por tu mensaje! EMA te contactará muy pronto 🌸');
+  }
+</script>
+</body>
+</html>
