@@ -426,7 +426,69 @@
     .social-btn:hover { border-color: var(--rose); transform: translateY(-3px); }
     .footer-copy { font-size: .7rem; color: rgba(250,246,240,0.2); }
 
-    /* ── ANIMATIONS ── */
+    /* Gallery click hint */
+    .gal-click-hint {
+      position: absolute; bottom: 1rem; right: 1.2rem;
+      font-size: .7rem; letter-spacing: .15em; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; transition: color .3s;
+    }
+    .gal-item:hover .gal-click-hint { color: rgba(255,255,255,0.9); }
+    .gal-item { cursor: pointer; }
+
+    /* ── MODAL ── */
+    .gal-modal {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(26,16,13,0.96);
+      overflow-y: auto;
+      animation: fadeIn .3s ease;
+    }
+    .gal-modal.open { display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
+    .gal-modal-inner {
+      max-width: 1000px; width: 100%;
+      padding: 3rem 2rem;
+      position: relative;
+      animation: fadeUp .4s ease both;
+    }
+    .gal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; width: 40px; height: 40px; border-radius: 50%;
+      font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .3s;
+    }
+    .gal-close:hover { background: var(--rose); border-color: var(--rose); }
+    .gal-modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300;
+      color: var(--cream); margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+    .gal-modal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .gal-modal-img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      border-radius: 2px;
+      transition: transform .4s, filter .4s;
+      filter: brightness(.92);
+    }
+    .gal-modal-img:hover { transform: scale(1.02); filter: brightness(1); }
+    .gal-img-wrap {
+      position: relative; overflow: hidden;
+    }
+    .gal-img-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(26,16,13,0.8) 0%, transparent 100%);
+      padding: 1rem .8rem .6rem;
+      font-size: .75rem; color: rgba(250,246,240,0.8);
+      letter-spacing: .08em;
+      transform: translateY(100%); transition: transform .3s;
+    }
+    .gal-img-wrap:hover .gal-img-caption { transform: translateY(0); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -584,11 +646,11 @@
       </p>
       <div class="about-stats">
         <div>
-          <div class="stat-num">500+</div>
+          <div class="stat-num">+100</div>
           <div class="stat-label">Eventos realizados</div>
         </div>
         <div>
-          <div class="stat-num">8+</div>
+          <div class="stat-num">4+</div>
           <div class="stat-label">Años de experiencia</div>
         </div>
         <div>
@@ -608,29 +670,43 @@
       <h2 class="section-title">Una <em>muestra</em> de lo que creamos</h2>
     </div>
     <div class="gallery-grid reveal">
-      <div class="gal-item">
+      <div class="gal-item" onclick="openGallery('grados')">
         <span class="gal-emoji">🎓</span>
         <div class="gal-overlay"><span class="gal-label">Decoración de grado universitario</span></div>
+        <div class="gal-click-hint">Ver galería →</div>
       </div>
-      <div class="gal-item">
+      <div class="gal-item" onclick="openGallery('matrimonios')">
         <span class="gal-emoji">🌿</span>
         <div class="gal-overlay"><span class="gal-label">Arco natural para matrimonio</span></div>
+        <div class="gal-click-hint">Ver galería →</div>
       </div>
-      <div class="gal-item">
+      <div class="gal-item" onclick="openGallery('fiestas')">
         <span class="gal-emoji">🎂</span>
         <div class="gal-overlay"><span class="gal-label">Mesa de dulces temática</span></div>
+        <div class="gal-click-hint">Ver galería →</div>
       </div>
-      <div class="gal-item">
+      <div class="gal-item" onclick="openGallery('bodas')">
         <span class="gal-emoji">💍</span>
         <div class="gal-overlay"><span class="gal-label">Boda de ensueño al aire libre</span></div>
+        <div class="gal-click-hint">Ver galería →</div>
       </div>
-      <div class="gal-item">
+      <div class="gal-item" onclick="openGallery('cumpleanos')">
         <span class="gal-emoji">🎈</span>
         <div class="gal-overlay"><span class="gal-label">Fiesta de cumpleaños temática</span></div>
+        <div class="gal-click-hint">Ver galería →</div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- MODAL GALERÍA -->
+<div id="galModal" class="gal-modal" onclick="closeGallery(event)">
+  <div class="gal-modal-inner">
+    <button class="gal-close" onclick="closeGallery()">✕</button>
+    <h2 class="gal-modal-title" id="galModalTitle"></h2>
+    <div class="gal-modal-grid" id="galModalGrid"></div>
+  </div>
+</div>
 
 <!-- PROCESS -->
 <section class="process">
@@ -704,7 +780,7 @@
       <div class="contact-info">
         <div class="contact-row">
           <div class="contact-icon">📱</div>
-          <span>+57 300 000 0000</span>
+          <span>+57 313 556 0647</span>
         </div>
         <div class="contact-row">
           <div class="contact-icon">📧</div>
@@ -767,7 +843,88 @@
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
 
-  // Form submit
+  // Gallery modal
+  const galData = {
+    grados: {
+      title: 'Decoraciones de Grado',
+      images: [
+        { url: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80', caption: 'Arco de globos dorados para graduación' },
+        { url: 'https://images.unsplash.com/photo-1562516155-e0c1ee44059b?w=600&q=80', caption: 'Fondo fotográfico para grado' },
+        { url: 'https://images.unsplash.com/photo-1627556704302-624286467c65?w=600&q=80', caption: 'Mesa de dulces temática universitaria' },
+        { url: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&q=80', caption: 'Globos y detalles de graduación' },
+        { url: 'https://images.unsplash.com/photo-1594122230689-45899d9e6f69?w=600&q=80', caption: 'Decoración elegante para grado' },
+        { url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80', caption: 'Ambiente festivo de graduación' },
+      ]
+    },
+    matrimonios: {
+      title: 'Decoraciones de Matrimonio',
+      images: [
+        { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80', caption: 'Arco floral romántico' },
+        { url: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80', caption: 'Ceremonia al aire libre' },
+        { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80', caption: 'Decoración de mesa nupcial' },
+        { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80', caption: 'Flores y detalles blancos' },
+        { url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80', caption: 'Pasillo de boda decorado' },
+        { url: 'https://images.unsplash.com/photo-1550005809-91ad75fb315f?w=600&q=80', caption: 'Ambiente elegante de matrimonio' },
+      ]
+    },
+    fiestas: {
+      title: 'Fiestas & Mesas de Dulces',
+      images: [
+        { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', caption: 'Mesa de dulces colorida' },
+        { url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80', caption: 'Decoración festiva con globos' },
+        { url: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&q=80', caption: 'Pastel temático personalizado' },
+        { url: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=600&q=80', caption: 'Fiesta temática infantil' },
+        { url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600&q=80', caption: 'Globos y streamers de colores' },
+        { url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80', caption: 'Celebración especial' },
+      ]
+    },
+    bodas: {
+      title: 'Bodas & Ceremonias',
+      images: [
+        { url: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&q=80', caption: 'Salón de boda decorado' },
+        { url: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=600&q=80', caption: 'Detalles florales de boda' },
+        { url: 'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=600&q=80', caption: 'Centro de mesa romántico' },
+        { url: 'https://images.unsplash.com/photo-1525772764200-be829a350797?w=600&q=80', caption: 'Arreglo floral nupcial' },
+        { url: 'https://images.unsplash.com/photo-1543083115-638c32cd3d58?w=600&q=80', caption: 'Boda al atardecer' },
+        { url: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=600&q=80', caption: 'Detalles elegantes de ceremonia' },
+      ]
+    },
+    cumpleanos: {
+      title: 'Cumpleaños & Celebraciones',
+      images: [
+        { url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80', caption: 'Cumpleaños lleno de color' },
+        { url: 'https://images.unsplash.com/photo-1558636508-e0969431e467?w=600&q=80', caption: 'Globos y decoración festiva' },
+        { url: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&q=80', caption: 'Pastel de cumpleaños especial' },
+        { url: 'https://images.unsplash.com/photo-1482575832494-771f74bf6857?w=600&q=80', caption: 'Fiesta temática personalizada' },
+        { url: 'https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?w=600&q=80', caption: 'Detalles de cumpleaños' },
+        { url: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=600&q=80', caption: 'Celebración especial de cumpleaños' },
+      ]
+    }
+  };
+
+  function openGallery(type) {
+    const data = galData[type];
+    if (!data) return;
+    document.getElementById('galModalTitle').textContent = data.title;
+    const grid = document.getElementById('galModalGrid');
+    grid.innerHTML = data.images.map(img => `
+      <div class="gal-img-wrap">
+        <img class="gal-modal-img" src="${img.url}" alt="${img.caption}" loading="lazy" />
+        <div class="gal-img-caption">${img.caption}</div>
+      </div>
+    `).join('');
+    const modal = document.getElementById('galModal');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGallery(e) {
+    if (e && e.target !== document.getElementById('galModal') && !e.target.classList.contains('gal-close')) return;
+    document.getElementById('galModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.getElementById('galModal').classList.remove('open'); document.body.style.overflow = ''; } });
   function enviarForm() {
     alert('¡Gracias por tu mensaje! EMA te contactará muy pronto 🌸');
   }
